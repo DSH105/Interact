@@ -1,0 +1,6 @@
+name: ${global.name}
+version: ${project.version}${build.number}
+description: Library and Bukkit/Sponge plugin for management of inventory interfaces
+author: DSH105
+website: ${project.url}
+main: com.dsh105.interact.BukkitInteractPlugin
