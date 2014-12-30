@@ -27,16 +27,19 @@
     <version>1.0.0-SNAPSHOT</version>
     <modules>
         <module>modules/InteractAPI</module>
-        <module>modules/Interact-Plugin</module>
+        <module>modules/InteractPlugin</module>
         <module>modules/InteractBukkit</module>
         <module>modules/InteractSponge</module>
+        <module>modules/Interact</module>
     </modules>
     <url>http://github.com/DSH105/Interact</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <global.name>Interact</global.name>
         <global.version>${project.version}</global.version>
-        <pluginId>interact</pluginId>
+        <global.id>interact</global.id>
+        <build.number></build.number>
     </properties>
 
     <repositories>
@@ -130,6 +133,14 @@
                 <version>2.1</version>
             </plugin>
         </plugins>
+
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ftp</artifactId>
+                <version>2.5</version>
+            </extension>
+        </extensions>
     </build>
 
     <!-- Distribution -->

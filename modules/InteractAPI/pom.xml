@@ -22,17 +22,6 @@
         <sourceDirectory>src/main/java</sourceDirectory>
         <finalName>${buildName}</finalName>
 
-        <resources>
-            <resource>
-                <targetPath>.</targetPath>
-                <filtering>true</filtering>
-                <directory>src/main/resources/</directory>
-                <includes>
-                    <include>*.yml</include>
-                </includes>
-            </resource>
-        </resources>
-
         <plugins>
             <!-- Compiler -->
             <plugin>
