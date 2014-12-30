@@ -2,7 +2,7 @@ package com.dsh105.interact.api;
 
 import java.util.SortedMap;
 
-public interface Layout {
+public interface Layout extends Serializable {
 
     SortedMap<Integer, Icon> getIcons();
 

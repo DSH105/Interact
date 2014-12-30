@@ -3,6 +3,8 @@ package com.dsh105.interact;
 import com.dsh105.interact.api.Icon;
 import com.dsh105.interact.api.Position;
 
+import java.util.Map;
+
 public class InteractPositionBuilder implements Position.Builder {
 
     private int slot;
@@ -28,5 +30,16 @@ public class InteractPositionBuilder implements Position.Builder {
     @Override
     public Position build() {
         return new InteractPosition(icon, slot);
+    }
+
+    @Override
+    public Position.Builder from(Map<String, Object> args) {
+        if (args.containsKey("slot")) {
+            slot((Integer) args.get("slot"));
+        }
+        if (args.containsKey("icon")) {
+            icon(Interact.icon().from((Map<String, Object>) args.get("icon")).build());
+        }
+        return this;
     }
 }

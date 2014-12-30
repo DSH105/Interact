@@ -9,13 +9,15 @@ import org.bukkit.inventory.ItemStack;
 import org.spongepowered.api.item.ItemType;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class InteractIconBuilder implements Icon.Builder {
 
-    private String name;
+    private String name = "";
     private String[] lore = new String[0];
     private String typeId;
-    private int quantity;
+    private int quantity = 1;
 
     @Override
     public Icon.Builder name(String name) {
@@ -29,11 +31,6 @@ public class InteractIconBuilder implements Icon.Builder {
             this.lore = new String[0];
         }
         this.lore = lore;
-        return this;
-    }
-
-    protected Icon.Builder type(String typeId) {
-        this.typeId = typeId;
         return this;
     }
 
@@ -79,5 +76,27 @@ public class InteractIconBuilder implements Icon.Builder {
         Affirm.notNull(typeId);
         Affirm.isTrue(quantity >= 0);
         return new InteractIcon(typeId, name, Arrays.asList(lore), quantity);
+    }
+
+    protected Icon.Builder type(String typeId) {
+        this.typeId = typeId;
+        return this;
+    }
+
+    @Override
+    public Icon.Builder from(Map<String, Object> args) {
+        if (args.containsKey("typeId")) {
+            typeId = (String) args.get("typeId");
+        }
+        if (args.containsKey("name")) {
+            name((String) args.get("name"));
+        }
+        if (args.containsKey("lore")) {
+            lore(((List<String>) args.get("lore")).toArray(new String[0]));
+        }
+        if (args.containsKey("quantity")) {
+            quantity((int) args.get("quantity"));
+        }
+        return this;
     }
 }

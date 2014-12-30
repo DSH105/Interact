@@ -4,9 +4,7 @@ import com.dsh105.commodus.container.ItemStackContainer;
 import com.dsh105.commodus.container.PlayerContainer;
 import com.dsh105.interact.api.*;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public abstract class InteractInventory implements Inventory {
 
@@ -81,6 +79,19 @@ public abstract class InteractInventory implements Inventory {
     @Override
     public Inventory.Builder builder() {
         return Interact.builder(this);
+    }
+
+    @Override
+    public Map<String, Object> serialize() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", name.replace(Interact.COLOR_CHAR, '&')); // TODO: color codes are being phased out
+        map.put("layout", layout.serialize());
+        map.put("interactIcon", interactIcon.serialize());
+        
+        // TODO: implement a way to save/load these
+        map.put("action.click", clickAction.getId());
+        map.put("action.open", openAction.getId());
+        return map;
     }
 
     protected void handleClick(PlayerContainer player, int slot) {

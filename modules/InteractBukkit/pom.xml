@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>com.dsh105</groupId>
-            <artifactId>interact-plugin</artifactId>
+            <artifactId>interactapi</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

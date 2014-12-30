@@ -4,8 +4,7 @@ import com.dsh105.commodus.Affirm;
 import com.dsh105.interact.api.Icon;
 import com.dsh105.interact.api.Layout;
 
-import java.util.Collections;
-import java.util.SortedMap;
+import java.util.*;
 
 public class InteractLayout implements Layout {
 
@@ -14,7 +13,7 @@ public class InteractLayout implements Layout {
     private final SortedMap<Integer, Icon> icons;
     private int maximumSize;
 
-    public InteractLayout(SortedMap<Integer, Icon> icons) {
+    protected InteractLayout(SortedMap<Integer, Icon> icons) {
         this.icons = icons;
         maximumSize = adjustSize(icons.size(), 9);
     }
@@ -85,5 +84,22 @@ public class InteractLayout implements Layout {
         Icon icon = get(slot);
         set(slot, get(with));
         set(with, icon);
+    }
+
+    @Override
+    public Map<String, Object> serialize() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("size", maximumSize);
+        for (int i = 0; i <= maximumSize; i++) {
+            Icon icon = get(i);
+            if (!icon.equals(Interact.getEmptySlotIcon())){
+                map.put("slots.slot-" + i, icon.serialize());
+            }
+        }
+        return map;
+    }
+
+    public static Layout deserialize(Map<String, Object> args) {
+        return Interact.layout(args);
     }
 }

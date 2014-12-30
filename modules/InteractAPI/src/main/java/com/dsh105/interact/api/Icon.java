@@ -4,7 +4,7 @@ import com.dsh105.commodus.container.ItemStackContainer;
 
 import java.util.List;
 
-public interface Icon {
+public interface Icon extends Serializable {
 
     org.bukkit.Material getBukkitType();
 
@@ -26,7 +26,7 @@ public interface Icon {
 
     Icon.Builder builder();
 
-    interface Builder extends InteractBuilder {
+    interface Builder extends InteractBuilder<Icon.Builder> {
 
         Icon.Builder name(String name);
 

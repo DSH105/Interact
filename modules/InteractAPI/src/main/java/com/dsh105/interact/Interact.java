@@ -25,31 +25,34 @@ import java.util.Map;
 
 public class Interact {
 
+    protected static final char COLOR_CHAR = '\u00A7';
+
     protected static Icon EMPTY_SLOT;
-    private static InteractPlugin PLUGIN;
+    private static Object PLUGIN;
     private static BuilderFactory FACTORY;
 
     static {
-        try {
+        setEmptySlotIcon(icon().of(ItemStackContainer.of("air", 1)).build());
+        /*try {
             FACTORY = (BuilderFactory) Class.forName(BuilderFactory.class.getCanonicalName().replace("Builder", "InteractBuilder")).newInstance();
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             throw new IllegalStateException("Interact factory is not available; plugin will not be able to function properly.");
-        }
+        }*/
+        FACTORY = new InteractBuilderFactory();
     }
 
-    protected static void prepare(InteractPlugin plugin) {
+    public static void prepare(Object plugin) {
         if (PLUGIN != null) {
-            throw new IllegalStateException("Plugin can only be instantiated once!");
+            throw new IllegalStateException("Interact can only be prepared once!");
         }
         PLUGIN = plugin;
-        setEmptySlotIcon(icon().of(ItemStackContainer.of("air", 1)).build());
     }
 
     protected static void disable() {
         PLUGIN = null;
     }
 
-    protected static InteractPlugin getPlugin() {
+    public static Object getPlugin() {
         return PLUGIN;
     }
 
@@ -95,6 +98,10 @@ public class Interact {
     }
 
     public static Layout layout(Position[] positions) {
-        return FACTORY.createLayoutBuilder(positions);
+        return FACTORY.createLayout(positions);
+    }
+
+    public static Layout layout(Map<String, Object> args) {
+        return FACTORY.deserializeLayout(args);
     }
 }

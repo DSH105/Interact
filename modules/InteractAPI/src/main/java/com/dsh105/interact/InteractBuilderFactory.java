@@ -17,9 +17,11 @@
 
 package com.dsh105.interact;
 
+import com.dsh105.commodus.Affirm;
 import com.dsh105.commodus.ServerUtil;
 import com.dsh105.interact.api.*;
 
+import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -53,11 +55,38 @@ public class InteractBuilderFactory implements BuilderFactory {
     }
 
     @Override
-    public Layout createLayoutBuilder(Position[] positions) {
+    public Layout createLayout(Position[] positions) {
         SortedMap<Integer, Icon> icons = new TreeMap<>();
         for (Position position : positions) {
             icons.put(position.getSlot(), position.getIcon());
         }
         return new InteractLayout(icons);
+    }
+    
+    @Override
+    public Layout deserializeLayout(Map<String, Object> args) {
+        // must exist
+        Affirm.notNull(args.get("size"));
+        int maximumSize = (int) args.get("size");
+
+        SortedMap<Integer, Icon> icons = new TreeMap<>();
+        for (int i = 0; i < maximumSize; i++) {
+            Icon icon = null;
+            Object iconArgs = args.get("slots.slot-" + i);
+
+            if (iconArgs != null && iconArgs instanceof Map) {
+                try {
+                    icon = Interact.icon().from((Map) iconArgs).build();
+                } catch (ClassCastException ignored) {
+                }
+            }
+            if (icon == null) {
+                icon = Interact.getEmptySlotIcon();
+            }
+            icons.put(i, icon);
+        }
+
+        return new InteractLayout(icons);
+        
     }
 }

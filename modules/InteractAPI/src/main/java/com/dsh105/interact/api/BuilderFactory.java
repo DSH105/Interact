@@ -1,5 +1,7 @@
 package com.dsh105.interact.api;
 
+import java.util.Map;
+
 public interface BuilderFactory {
 
     Inventory.Builder createInventoryBuilder();
@@ -10,5 +12,7 @@ public interface BuilderFactory {
 
     Icon.Builder createIconBuilder();
 
-    Layout createLayoutBuilder(Position[] positions);
+    Layout createLayout(Position[] positions);
+
+    Layout deserializeLayout(Map<String, Object> args);
 }

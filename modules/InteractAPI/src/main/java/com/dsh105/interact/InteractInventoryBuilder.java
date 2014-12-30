@@ -3,8 +3,10 @@ package com.dsh105.interact;
 import com.dsh105.commodus.Affirm;
 import com.dsh105.interact.api.*;
 
-public abstract class InteractInventoryBuilder implements Inventory.Builder {
+import java.util.Map;
 
+public abstract class InteractInventoryBuilder implements Inventory.Builder {
+    
     protected String name;
     protected int maximumSize;
     protected Position[] positions;
@@ -65,6 +67,24 @@ public abstract class InteractInventoryBuilder implements Inventory.Builder {
         positions = new Position[maximumSize];
         for (int i = 0; i < maximumSize; i++) {
             at(Interact.position().slot(i).icon(Interact.getEmptySlotIcon()).build());
+        }
+        return this;
+    }
+
+    @Override
+    public Inventory.Builder from(Map<String, Object> args) {
+        if (args.containsKey("name")) {
+            name((String) args.get("name"));
+        }
+        if (args.containsKey("layout")) {
+            Layout layout = Interact.layout((Map) args.get("layout"));
+            size(layout.getMaximumSize());
+            for (Map.Entry<Integer, Icon> entry : layout.getIcons().entrySet()) {
+                at(Interact.position().slot(entry.getKey()).icon(entry.getValue()).build());
+            }
+        }
+        if (args.containsKey("interactIcon")) {
+            interactIcon = Interact.icon().from((Map<String, Object>) args.get("interactIcon")).build();
         }
         return this;
     }

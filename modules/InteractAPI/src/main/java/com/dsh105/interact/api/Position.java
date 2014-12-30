@@ -1,6 +1,6 @@
 package com.dsh105.interact.api;
 
-public interface Position {
+public interface Position extends Serializable {
 
     Icon getIcon();
 
@@ -8,7 +8,7 @@ public interface Position {
 
     Position.Builder builder();
 
-    interface Builder extends InteractBuilder {
+    interface Builder extends InteractBuilder<Position.Builder> {
 
         Builder slot(int slot);
 

@@ -3,6 +3,9 @@ package com.dsh105.interact;
 import com.dsh105.interact.api.Icon;
 import com.dsh105.interact.api.Position;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class InteractPosition implements Position {
 
     private Icon icon;
@@ -26,5 +29,13 @@ public class InteractPosition implements Position {
     @Override
     public Position.Builder builder() {
         return Interact.position(this);
+    }
+
+    @Override
+    public Map<String, Object> serialize() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("slot", slot);
+        map.put("icon", icon.serialize());
+        return map;
     }
 }

@@ -4,7 +4,7 @@ import com.dsh105.commodus.container.PlayerContainer;
 
 import java.util.UUID;
 
-public interface Inventory {
+public interface Inventory extends Serializable {
 
     UUID getId();
 
@@ -24,7 +24,7 @@ public interface Inventory {
 
     Inventory.Builder builder();
 
-    interface Builder extends InteractBuilder {
+    interface Builder extends InteractBuilder<Inventory.Builder> {
 
         Inventory.Builder name(String name);
 

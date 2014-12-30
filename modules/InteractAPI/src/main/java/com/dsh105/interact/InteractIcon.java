@@ -9,7 +9,9 @@ import org.bukkit.inventory.ItemStack;
 import org.spongepowered.api.item.ItemType;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class InteractIcon implements Icon {
 
@@ -73,5 +75,39 @@ public class InteractIcon implements Icon {
     @Override
     public Builder builder() {
         return new InteractIconBuilder().of(getStack());
+    }
+
+    @Override
+    public Map<String, Object> serialize() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("typeId", typeId);
+        map.put("name", name);
+        map.put("lore", lore);
+        map.put("quantity", quantity);
+        return map;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof InteractIcon)) return false;
+
+        InteractIcon that = (InteractIcon) o;
+
+        if (quantity != that.quantity) return false;
+        if (!lore.equals(that.lore)) return false;
+        if (!name.equals(that.name)) return false;
+        if (!typeId.equals(that.typeId)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = typeId.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + lore.hashCode();
+        result = 31 * result + quantity;
+        return result;
     }
 }
