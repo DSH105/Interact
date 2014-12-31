@@ -6,9 +6,7 @@ import com.dsh105.interact.api.*;
 
 import java.util.*;
 
-public abstract class InteractInventory implements Inventory {
-
-    private final Set<PlayerContainer> VIEWERS = new HashSet<>();
+public abstract class InteractInventory<I> implements Inventory<I> {
 
     private UUID id;
     private String name;
@@ -61,19 +59,10 @@ public abstract class InteractInventory implements Inventory {
         if (player.get() == null) {
             throw new IllegalArgumentException("Provided player is not currently available");
         }
-        VIEWERS.add(player);
 
         if (openAction != null) {
             openAction.onOpen(this, player);
         }
-    }
-
-    @Override
-    public void close(PlayerContainer player) {
-        if (player.get() == null) {
-            throw new IllegalArgumentException("Provided player is not currently available");
-        }
-        VIEWERS.remove(player);
     }
 
     @Override

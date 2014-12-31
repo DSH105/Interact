@@ -11,38 +11,42 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Map;
 
-public class BukkitInteractInventory extends InteractInventory implements InventoryHolder, Listener {
-
+public class BukkitInteractInventory extends InteractInventory<org.bukkit.inventory.Inventory> implements InventoryHolder, Listener {
+    
     protected BukkitInteractInventory(String name, Layout layout, Icon interactIcon, ClickAction clickAction, OpenAction openAction) {
         super(name, layout, interactIcon, clickAction, openAction);
+        
         Plugin plugin = (Plugin) Interact.getPlugin();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public org.bukkit.inventory.Inventory getInventory() {
-        return Bukkit.createInventory(this, getLayout().getMaximumSize(), getName());
+        org.bukkit.inventory.Inventory inventory = Bukkit.createInventory(this, getLayout().getMaximumSize(), getName());
+        for (Map.Entry<Integer, Icon> entry : getLayout().getIcons().entrySet()) {
+            inventory.setItem(entry.getKey(), entry.getValue().asBukkit());
+        }
+        return inventory;
     }
 
     @Override
     public void show(PlayerContainer player) {
         super.show(player);
-        org.bukkit.inventory.Inventory inventory = getInventory();
-        for (Map.Entry<Integer, Icon> entry : getLayout().getIcons().entrySet()) {
-            inventory.setItem(entry.getKey(), entry.getValue().asBukkit());
-        }
-        player.asBukkit().openInventory(inventory);
+        player.asBukkit().openInventory(getInventory());
     }
 
     @Override
     public void close(PlayerContainer player) {
-        super.close(player);
+        if (player.get() == null) {
+            throw new IllegalArgumentException("Provided player is not currently available");
+        }
         InventoryHolder holder = player.asBukkit().getOpenInventory().getTopInventory().getHolder();
-        if (holder instanceof Inventory) {
+        if (holder instanceof Inventory && ((Inventory) holder).getId().equals(this.getId())) {
             player.asBukkit().closeInventory();
         }
     }
@@ -66,8 +70,10 @@ public class BukkitInteractInventory extends InteractInventory implements Invent
 
     @EventHandler(ignoreCancelled = true)
     public void onInteract(PlayerInteractEvent event) {
-        boolean result = handleInteract(PlayerContainer.of(event.getPlayer()), ItemStackContainer.of(event.getItem()));
-        event.setCancelled(result);
+        ItemStack stack = event.getItem();
+        if (stack != null) {
+            event.setCancelled(handleInteract(PlayerContainer.of(event.getPlayer()), ItemStackContainer.of(stack)));
+        }
     }
 
 }

@@ -4,10 +4,12 @@ import com.dsh105.commodus.container.PlayerContainer;
 
 import java.util.UUID;
 
-public interface Inventory extends Serializable {
+public interface Inventory<I> extends Serializable {
 
     UUID getId();
 
+    I getInventory();
+    
     String getName();
 
     Layout getLayout();
