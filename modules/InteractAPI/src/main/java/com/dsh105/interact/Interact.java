@@ -19,7 +19,10 @@ package com.dsh105.interact;
 
 import com.dsh105.commodus.Affirm;
 import com.dsh105.commodus.container.ItemStackContainer;
+import com.dsh105.commodus.sponge.SpongeUtil;
 import com.dsh105.interact.api.*;
+import org.bukkit.plugin.Plugin;
+import org.spongepowered.api.Game;
 
 import java.util.Map;
 
@@ -41,11 +44,23 @@ public class Interact {
         FACTORY = new InteractBuilderFactory();
     }
 
-    public static void prepare(Object plugin) {
+    public static void prepare(Plugin plugin) {
+        Affirm.notNull(plugin);
         if (PLUGIN != null) {
             throw new IllegalStateException("Interact can only be prepared once!");
         }
         PLUGIN = plugin;
+    }
+
+    public static void prepare(Object plugin, Game game) {
+        Affirm.notNull(plugin);
+        Affirm.notNull(game);
+        Affirm.isTrue(game.getPluginManager().fromInstance(plugin).isPresent(), "Provided plugin object is not a Sponge plugin!");
+        if (PLUGIN != null) {
+            throw new IllegalStateException("Interact can only be prepared once!");
+        }
+        PLUGIN = plugin;
+        SpongeUtil.prepare(plugin, game);
     }
 
     protected static void disable() {

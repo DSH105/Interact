@@ -45,8 +45,7 @@ public class SpongeInteractPlugin implements InteractPlugin {
 
     @Subscribe
     public void onPreInitialization(PreInitializationEvent event) {
-        SpongeUtil.prepare(this, game);
-        Interact.prepare(this);
+        Interact.prepare(this, game);
     }
 
     @Subscribe
