@@ -16,7 +16,7 @@ If you're familiar with Maven, you'll be able to automatically download Interact
 
 ```xml
 <repository>
-    <id>dsh-repo</id>
+    <id>interact-repo</id>
     <url>http://repo.dsh105.com/</url>
 </repository>
 ```
