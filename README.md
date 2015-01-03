@@ -46,3 +46,8 @@ If you are also utilising Commodus (automatically shaded in by default), you wil
 ```
 
 Note that Commodus and Interact will need to be **shaded and relocated to your plugin's package** for your plugin to work correctly.
+
+Interact as a Bukkit/Sponge plugin
+====================
+
+The project also includes a module built for use on either a Bukkit or Sponge server. This means that instead of shading Interact into your plugin, you may instead install it on your server and let it handle any plugin-related setup duties required.
